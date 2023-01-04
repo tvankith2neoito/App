@@ -86,6 +86,14 @@ class ReportActionItemMessageEdit extends React.Component {
         };
     }
 
+    componentDidUpdate() {
+        if (!this.focusInputAfterEmojiPickerModalHide) {
+            return;
+        }
+        this.textInput.focus();
+        this.focusInputAfterEmojiPickerModalHide = false;
+    }
+
     /**
      * Update Selection on change cursor position.
      *
@@ -249,7 +257,9 @@ class ReportActionItemMessageEdit extends React.Component {
                     <View style={styles.editChatItemEmojiWrapper}>
                         <EmojiPickerButton
                             isDisabled={this.props.shouldDisableEmojiPicker}
-                            onModalHide={() => InteractionManager.runAfterInteractions(() => this.textInput.focus())}
+                            onModalHide={() => InteractionManager.runAfterInteractions(() => {
+                                this.focusInputAfterEmojiPickerModalHide = true
+                            })}
                             onEmojiSelected={this.addEmojiToTextBox}
                             nativeID={this.emojiButtonID}
                         />
